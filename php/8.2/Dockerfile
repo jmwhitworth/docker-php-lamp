@@ -54,7 +54,7 @@ USER ${USER_NAME}
 
 # Set git user credentials
 RUN git config --global user.email ${GIT_EMAIL} \
-    && git config --global user.name = ${GIT_USERNAME} \
+    && git config --global user.name ${GIT_USERNAME} \
     && git config --global pull.rebase false
 
 # Install nvm with node and npm
