@@ -1,0 +1,4 @@
+# alias myscript='~/scripts/myScript.sh'
+
+alias phpunit='vendor/bin/phpunit'
+alias wp='vendor/bin/wp'

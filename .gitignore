@@ -1,0 +1,11 @@
+/heroku/*
+/logs/mysql/*
+/logs/nginx/*
+#/mysql-conf/*
+/nginx/sites-enabled/*
+/php/scripts/*
+/ssh/*
+
+.env
+
+!.keep
