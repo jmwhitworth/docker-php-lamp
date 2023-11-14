@@ -3,20 +3,26 @@ version: '3.9'
 x-php-service: &php-service
   build: &php-service-args
     args:
+        # For the container's non-root user account
         USER_NAME: ${USER_NAME:-dev}
         USER_UID: ${USER_UID:-1000}
         USER_GID: ${USER_GID:-1000}
+        # Set for streamlining Git CLI use
         GIT_EMAIL: ${GIT_EMAIL:-''}
         GIT_NAME: ${GIT_NAME:-''}
+        # Node is installed via NVM so this can be flexible during use
         NODE_VERSION: ${NODE_VERSION:-14.21.3}
         COMPOSER_VERSION: ${COMPOSER_VERSION:-2.6.5}
   volumes:
+    # Project files & Composer cache (optional)
     - projects:/var/www/html
     - composer:/home/${USER_NAME:-dev}/.composer
-    - ./ssh:/home/dev/.ssh
+    # PHP config and bashrc aliases & scripts
+    - ./php/php.ini:/usr/local/etc/php/php.ini
     - ./php/aliases:/home/${USER_NAME:-dev}/.bash_aliases
     - ./php/scripts:/home/${USER_NAME:-dev}/scripts
-    - ./php/php.ini:/usr/local/etc/php/php.ini
+    # Passing/storing SSH & Heroku CLI sessions from host
+    - ./ssh:/home/dev/.ssh
     - ${HEROKU_SESSION:-./php/_netrc}:/home/${USER_NAME:-dev}/.netrc
   restart: unless-stopped
 
@@ -40,6 +46,7 @@ services:
     image: nginx:1.25-bullseye
     ports:
       - '${NGINX_PORT:-80}:80'
+      - '443:443'
     volumes:
       - projects:/var/www/html
       - ${NGINX_DIR:-./nginx}/nginx.conf:/etc/nginx/nginx.conf
@@ -73,12 +80,9 @@ services:
     image: redis:7.2.3-alpine3.18
     ports: 
       - '${REDIS_PORT:-6379}:6379'
-    volumes:
-      - redis:/data
     restart: unless-stopped
 
 volumes:
   projects:
   mysql:
-  redis:
   composer:
