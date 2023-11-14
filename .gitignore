@@ -4,6 +4,7 @@
 #/mysql-conf/*
 /nginx/sites-enabled/*
 /php/scripts/*
+/php/aliases
 /ssh/*
 
 .env

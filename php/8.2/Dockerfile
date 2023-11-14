@@ -4,7 +4,7 @@ ARG USER_NAME
 ARG USER_UID
 ARG USER_GID
 ARG GIT_EMAIL
-ARG GIT_USERNAME
+ARG GIT_NAME
 ARG NODE_VERSION
 ARG COMPOSER_VERSION
 ENV HOME_DIR /home/${USER_NAME}
@@ -54,7 +54,7 @@ USER ${USER_NAME}
 
 # Set git user credentials
 RUN git config --global user.email ${GIT_EMAIL} \
-    && git config --global user.name ${GIT_USERNAME} \
+    && git config --global user.name ${GIT_NAME} \
     && git config --global pull.rebase false
 
 # Install nvm with node and npm

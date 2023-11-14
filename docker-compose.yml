@@ -1,6 +1,40 @@
 version: '3.9'
 
+x-php-service: &php-service
+  build: &php-service-args
+    args:
+        USER_NAME: ${USER_NAME:-dev}
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+        GIT_EMAIL: ${GIT_EMAIL:-''}
+        GIT_NAME: ${GIT_NAME:-''}
+        NODE_VERSION: ${NODE_VERSION:-14.21.3}
+        COMPOSER_VERSION: ${COMPOSER_VERSION:-2.6.5}
+  volumes:
+    - projects:/var/www/html
+    - composer:/home/${USER_NAME:-dev}/.composer
+    - ./ssh:/home/dev/.ssh
+    - ./php/aliases:/home/${USER_NAME:-dev}/.bash_aliases
+    - ./php/scripts:/home/${USER_NAME:-dev}/scripts
+    - ./php/php.ini:/usr/local/etc/php/php.ini
+    - ${HEROKU_SESSION:-./php/_netrc}:/home/${USER_NAME:-dev}/.netrc
+  restart: unless-stopped
+
 services:
+  php-74-fpm:
+    <<: *php-service
+    container_name: ${CONTAINER_PREFIX:-lamp}-php7.4
+    build:
+      <<: *php-service-args
+      context: ./php/7.4
+  
+  php-82-fpm:
+    <<: *php-service
+    container_name: ${CONTAINER_PREFIX:-lamp}-php8.2
+    build:
+      <<: *php-service-args
+      context: ./php/8.2
+
   nginx:
     container_name: ${CONTAINER_PREFIX:-lamp}-nginx
     image: nginx:1.25-bullseye
@@ -17,37 +51,6 @@ services:
     depends_on:
       - php-74-fpm
       - php-82-fpm
-    restart: unless-stopped
-  
-  php-74-fpm:
-    container_name: ${CONTAINER_PREFIX:-lamp}-php7.4
-    build: ./php/7.4
-    volumes:
-      - projects:/var/www/html
-      - composer74:/home/${USER_NAME:-dev}/.composer
-      - ./ssh:/home/dev/.ssh
-    restart: unless-stopped
-  
-  php-82-fpm:
-    container_name: ${CONTAINER_PREFIX:-lamp}-php8.2
-    build: 
-      context: ./php/8.2
-      args:
-        USER_NAME: ${USER_NAME:-dev}
-        USER_UID: ${USER_UID:-1000}
-        USER_GID: ${USER_GID:-1000}
-        GIT_EMAIL: ${GIT_EMAIL:-''}
-        GIT_NAME: ${GIT_NAME:-''}
-        NODE_VERSION: ${NODE_VERSION:-14.21.3}
-        COMPOSER_VERSION: ${COMPOSER_VERSION:-2.6.5}
-    volumes:
-      - projects:/var/www/html
-      - composer82:/home/${USER_NAME:-dev}/.composer
-      - ./ssh:/home/dev/.ssh
-      - ./php/aliases:/home/${USER_NAME:-dev}/.bash_aliases
-      - ./php/scripts:/home/${USER_NAME:-dev}/scripts
-      - ./php/php.ini:/usr/local/etc/php/php.ini
-      - ${HEROKU_SESSION:-./php/_netrc}:/home/${USER_NAME:-dev}/.netrc
     restart: unless-stopped
 
   mysql:
@@ -78,5 +81,4 @@ volumes:
   projects:
   mysql:
   redis:
-  composer74:
-  composer82:
+  composer:
