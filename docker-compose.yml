@@ -1,6 +1,7 @@
 version: '3.9'
 
 x-php-service: &php-service
+  # Inherited by all PHP-FPM instances/versions
   build: &php-service-args
     args:
         # For the container's non-root user account
@@ -24,7 +25,10 @@ x-php-service: &php-service
     # Passing/storing SSH & Heroku CLI sessions from host
     - ./ssh:/home/dev/.ssh
     - ${HEROKU_SESSION:-./php/_netrc}:/home/${USER_NAME:-dev}/.netrc
-  restart: unless-stopped
+    - /etc/localtime:/etc/localtime:ro
+  dns:
+    # dnsmasq container, so it can resolve 'internal' requests to Nginx
+    - 172.16.1.1
 
 services:
   php-74-fpm:
@@ -59,6 +63,10 @@ services:
     depends_on:
       - php-74-fpm
       - php-82-fpm
+    networks:
+      default:
+        # Static IP here so dnsmasq can point to Nginx easily
+        ipv4_address: 172.16.1.2
     restart: unless-stopped
 
   mysql:
@@ -69,7 +77,6 @@ services:
     volumes:
       - mysql:/var/lib/mysql
       - ${LOGGING_DIR:-./logs}/mysql:/var/log/mysql
-      - ${MYSQL_CONF_DIR:-./mysql-conf}:/etc/mysql/conf.d
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_CHARSET=utf8mb4
@@ -85,8 +92,29 @@ services:
       - redis:/data
     restart: unless-stopped
 
+  dnsmasq:
+    container_name: ${CONTAINER_PREFIX:-lamp}-dnsmasq
+    image: strm/dnsmasq
+    volumes:
+      - ./dnsmasq.conf:/etc/dnsmasq.conf
+    ports:
+      - ${DNSMASQ_PORT:-53}:53/udp
+    cap_add:
+      - NET_ADMIN
+    networks:
+      default:
+        # Static IP so we can point other containers' dns here
+        ipv4_address: 172.16.1.1
+
 volumes:
   projects:
   mysql:
   redis:
   composer:
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet:   172.16.0.0/23
+          ip_range: 172.16.0.0/24
