@@ -72,3 +72,12 @@ ENV PATH      ${NVM_DIR}/versions/node/v${NODE_VERSION}/bin:$PATH
 # Install Heroku CLI
 RUN curl https://cli-assets.heroku.com/install-ubuntu.sh | sh \
     && heroku plugins:install apps-table
+
+# Install ZSH https://github.com/deluan/zsh-in-docker
+RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.5/zsh-in-docker.sh)" -- \
+    -a '. ~/.bash_aliases' \
+    -p git \
+    -p ssh-agent \
+    -p https://github.com/zsh-users/zsh-autosuggestions \
+    -p https://github.com/zsh-users/zsh-completions && \
+    sudo chsh -s /bin/zsh ${USER_NAME}
