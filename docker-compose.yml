@@ -25,6 +25,7 @@ x-php-service: &php-service
     # Passing/storing SSH & Heroku CLI sessions from host
     - ./ssh:/home/dev/.ssh
     - ${HEROKU_SESSION:-./php/_netrc}:/home/${USER_NAME:-dev}/.netrc
+    - ./php/zsh_history:/home/${USER_NAME:-dev}/.zsh_history
     - /etc/localtime:/etc/localtime:ro
   dns:
     # dnsmasq container, so it can resolve 'internal' requests to Nginx
