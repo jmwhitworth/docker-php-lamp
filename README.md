@@ -6,7 +6,7 @@ Built for universal PHP development with a focus on Laravel & WordPress tools.
 
  - PHP:
    - 8.2
-   - 7.4 (WIP)
+   - 7.4
  - NGINX
  - Mysql
  - Redis
@@ -16,4 +16,3 @@ Built for universal PHP development with a focus on Laravel & WordPress tools.
 ## Todo
 
  - Full Documentation
- - Add full PHP 7.4 support
