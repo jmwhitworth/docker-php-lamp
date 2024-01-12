@@ -13,7 +13,7 @@ Built for universal PHP development with a focus on Laravel & WordPress tools.
 - NGINX
 - Mysql
 - Redis
-- NodeJS & Yarn via NVM
+- NodeJS & Yarn *via NVM*
 - Heroku CLI
 - Oh-My-Zsh
 
@@ -43,7 +43,7 @@ While the initial build can take 10+ minutes, once the containers are built you 
 
 ## Hosting a website for development
 
-To host your first website locally, go to the `nginx` directory and create a copy of `template.conf`. Insert your copy into the `sites-enabled` folder, being sure to rename it to something appropriate.
+To host your first website locally, go to the `nginx` directory and create a copy of `nginx/template.conf`. Insert your copy into the `nginx/sites-enabled` folder, being sure to rename it to something appropriate.
 
 Now you should have a file: `nginx/sites-enabled/mywebsite.conf`.
 
@@ -91,11 +91,11 @@ Now that you've built the containers, added your config file for the website you
 
 Here's my recommendation:
 
-Using VSCode, install the Docker extension for remote container development. Using this, you can then attach VSCode to a container.
+Using VSCode, [install the Docker extension for remote container development](https://code.visualstudio.com/docs/devcontainers/containers). Using this, you can then attach VSCode to a container.
 
-If you attach to the PHP 8 container, for example, you'll then have access to a full Linux environment.
+If you attach to one of the PHP containers, for example, you'll then have access to a full Linux environment.
 
-You can use ZSH for a nice terminal experience. Run any PHP or Node/NPM commands you'd like. You can manage your code via Git.
+You can use ZSH for a nice terminal experience, run any PHP or Node/NPM commands you'd like, and manage your code via Git.
 
 The ZSH command history is shared between PHP containers as a quality-of-life feature if you need to swap between them often.
 
