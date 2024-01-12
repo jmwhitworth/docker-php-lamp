@@ -59,10 +59,10 @@ server {
     root /var/www/html/MYWEBSITE/public;
     index index.php index.html;
 
-	# ... REST OF FILE
+    # ... REST OF FILE
 
     # Choose PHP version
-	# COMMENT OUT THE ONE YOU DON'T WANT
+    # COMMENT OUT THE ONE YOU DON'T WANT
     #include /etc/nginx/php/7.4.conf;
     include /etc/nginx/php/8.2.conf;
 }
