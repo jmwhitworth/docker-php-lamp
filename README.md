@@ -7,6 +7,7 @@ Built for universal PHP development with a focus on Laravel & WordPress tools.
 ## Currently supports / includes:
 
 - PHP:
+  - 8.3 (Imagick not currently supported)
   - 8.2
   - 7.4
 - xDebug
@@ -96,8 +97,6 @@ Using VSCode, [install the Docker extension for remote container development](ht
 If you attach to one of the PHP containers, for example, you'll then have access to a full Linux environment.
 
 You can use ZSH for a nice terminal experience, run any PHP or Node/NPM commands you'd like, and manage your code via Git.
-
-The ZSH command history is shared between PHP containers as a quality-of-life feature if you need to swap between them often.
 
 ## Important information
 

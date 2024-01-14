@@ -45,6 +45,13 @@ services:
       <<: *php-service-args
       context: ./php/8.2
 
+  php-83-fpm:
+    <<: *php-service
+    container_name: ${CONTAINER_PREFIX:-lamp}-php8.3
+    build:
+      <<: *php-service-args
+      context: ./php/8.3
+
   nginx:
     container_name: ${CONTAINER_PREFIX:-lamp}-nginx
     image: nginx:1.25-bullseye
