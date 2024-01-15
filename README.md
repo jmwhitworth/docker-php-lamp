@@ -17,6 +17,7 @@ Built for universal PHP development with a focus on Laravel & WordPress tools.
 - NodeJS & Yarn *via NVM*
 - Heroku CLI
 - Oh-My-Zsh
+- AWS cli
 
 ## Getting started:
 
