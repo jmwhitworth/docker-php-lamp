@@ -34,6 +34,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions \
         intl \
         opcache \
         redis \
+        pdo_mysql \
         zip \
         xdebug \
         @composer-${COMPOSER_VERSION} \

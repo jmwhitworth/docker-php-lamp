@@ -33,6 +33,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions \
         imagick \
         intl \
         opcache \
+        pdo_mysql \
         redis \
         zip \
         xdebug \
