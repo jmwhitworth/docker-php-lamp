@@ -28,6 +28,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions \
     && install-php-extensions \
         exif \
         gd \
+        gmp \
         mysqli \
         # imagick \ *NOT CURRENTLY SUPPORTED
         intl \
