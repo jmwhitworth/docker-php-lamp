@@ -10,3 +10,6 @@
 .env
 
 !.keep
+
+# Google drive temporary uploads folder
+.tmp.driveupload/*
