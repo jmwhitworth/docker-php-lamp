@@ -12,4 +12,5 @@
 !.keep
 
 # Google drive temporary uploads folder
+.tmp.drivedownload/*
 .tmp.driveupload/*
