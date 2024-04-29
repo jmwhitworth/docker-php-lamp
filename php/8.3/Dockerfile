@@ -72,7 +72,8 @@ ENV NODE_PATH ${NVM_DIR}/versions/node/v${NODE_VERSION}/lib/node_modules
 ENV PATH      ${NVM_DIR}/versions/node/v${NODE_VERSION}/bin:$PATH
 
 # Install Heroku CLI
-RUN wget -qO- https://cli-assets.heroku.com/install.sh | sh
+RUN wget -qO- https://cli-assets.heroku.com/install.sh | sh \
+    && heroku plugins:install apps-table
 
 # Install ZSH https://github.com/deluan/zsh-in-docker
 RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.5/zsh-in-docker.sh)" -- \
