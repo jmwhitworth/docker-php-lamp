@@ -71,7 +71,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     depends_on:
       - php-74-fpm
-      - php-82-fpm
+      - php-83-fpm
     networks:
       default:
         # Static IP here so dnsmasq can point to Nginx easily

@@ -1,4 +1,4 @@
-FROM php:8.3.6-fpm-bullseye
+FROM php:8.3.8-fpm-bullseye
 
 ARG USER_NAME
 ARG USER_UID
@@ -78,6 +78,7 @@ RUN wget -qO- https://cli-assets.heroku.com/install.sh | sh \
 # Install ZSH https://github.com/deluan/zsh-in-docker
 RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.5/zsh-in-docker.sh)" -- \
     -a '. ~/.bash_aliases' \
+    -a 'tput rmcup' \
     -p git \
     -p ssh-agent \
     -p https://github.com/zsh-users/zsh-autosuggestions \
