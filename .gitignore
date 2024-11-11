@@ -1,7 +1,6 @@
+/aws/*
 /heroku/*
-/logs/mysql/*
-/logs/nginx/*
-#/mysql-conf/*
+/logs/*
 /nginx/sites-enabled/*
 /php/scripts/*
 /php/aliases

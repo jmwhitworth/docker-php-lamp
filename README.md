@@ -8,11 +8,12 @@ Built for universal PHP development with a focus on Laravel & WordPress tools.
 
 - PHP:
   - 8.3 (Imagick not currently supported)
-  - 8.2
   - 7.4
+- Python 3 (With pipenv)
 - xDebug
 - NGINX
 - Mysql
+- Postgres
 - Redis
 - NodeJS & Yarn *via NVM*
 - Heroku CLI
@@ -106,7 +107,3 @@ You can use ZSH for a nice terminal experience, run any PHP or Node/NPM commands
 - When setting up a database connection from a PHP container to the MYSQL container, you must set the IP address of the server to be `mysql`, as this is how Docker Compose containers 'see' eachother, instead of using `localhost` or `127.0.0.1` as you might normally expect.
 - If you add SSH keys, these will be saved in the `ssh` folder so that you need only set them up once.
 - All data for mysql and PHP containers are stored in Docker volumes. This ensures maximum speed but doesn't allow you to navigate them with your host computer's file browser. For Windows systems, this is to ensure there's no slowdown. If you don't like this, just change the mappings in the `docker-compose.yml` file.
-
-## To do:
-
-- Investigate intermitent issue with first builds crashing during updates.

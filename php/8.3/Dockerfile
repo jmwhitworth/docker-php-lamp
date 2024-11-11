@@ -1,4 +1,4 @@
-FROM php:8.3.11-fpm-bullseye
+FROM php:8.3.12-fpm-bullseye
 
 ARG USER_NAME
 ARG USER_UID
@@ -14,11 +14,30 @@ ENV NVM_DIR ${HOME_DIR}/.nvm
 RUN apt-get update && apt-get install -y \
     curl \
     wget \
+    make \
     build-essential \
     libssl-dev \
+    default-libmysqlclient-dev \
+    zlib1g-dev \
+    libbz2-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    llvm \
+    libncursesw5-dev \
+    xz-utils \
+    tk-dev \
+    libxml2-dev \
+    libxmlsec1-dev \
+    libffi-dev \
+    liblzma-dev \
     git \
     gnupg \
     nano \
+    iputils-ping \
+    python3 \
+    python3-dev \
+    python3-pip \
+    pkg-config \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -92,3 +111,9 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     && unzip awscliv2.zip \
     && sudo ./aws/install \
     && rm -rf awscliv2.zip aws
+
+# Install pipenv and pyenv
+RUN pip install --user pipenv && curl https://pyenv.run | bash
+
+# Add pipenv to $PATH
+ENV PATH ${HOME_DIR}/.local/bin:$PATH

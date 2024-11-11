@@ -1,5 +1,3 @@
-version: '3.9'
-
 x-php-service: &php-service
   # Inherited by all PHP-FPM instances/versions
   build: &php-service-args
@@ -13,7 +11,7 @@ x-php-service: &php-service
         GIT_NAME: ${GIT_NAME:-''}
         # Node is installed via NVM so this can be flexible during use
         NODE_VERSION: ${NODE_VERSION:-14.21.3}
-        COMPOSER_VERSION: ${COMPOSER_VERSION:-2.7.9}
+        COMPOSER_VERSION: ${COMPOSER_VERSION:-2.8.2}
   volumes:
     # Project files & Composer cache (optional)
     - projects:/var/www/html
@@ -24,10 +22,12 @@ x-php-service: &php-service
     - ./php/scripts:/home/${USER_NAME:-dev}/scripts
     - ./php/php-fpm.d:/usr/local/etc/php-fpm.d
     # Passing/storing SSH & Heroku CLI sessions from host
-    - ./ssh:/home/dev/.ssh
+    - ./ssh:/home/${USER_NAME:-dev}/.ssh
     - ${HEROKU_SESSION:-./php/_netrc}:/home/${USER_NAME:-dev}/.netrc
     - ./php/zsh_history:/home/${USER_NAME:-dev}/.zsh_history
     - /etc/localtime:/etc/localtime:ro
+    # AWS CLI Profiles
+    - ./aws:/home/${USER_NAME:-dev}/.aws
   dns:
     # dnsmasq container, so it can resolve 'internal' requests to Nginx
     - 172.16.1.1
@@ -39,13 +39,6 @@ services:
     build:
       <<: *php-service-args
       context: ./php/7.4
-  
-  php-82-fpm:
-    <<: *php-service
-    container_name: ${CONTAINER_PREFIX:-lamp}-php8.2
-    build:
-      <<: *php-service-args
-      context: ./php/8.2
 
   php-83-fpm:
     <<: *php-service
@@ -56,7 +49,7 @@ services:
 
   nginx:
     container_name: ${CONTAINER_PREFIX:-lamp}-nginx
-    image: nginx:1.25-bullseye
+    image: nginx:${NGINX_VERSION:-1.25}-bullseye
     ports:
       - '${NGINX_PORT:-80}:80'
       - '${NGINX_SSL_PORT:-443}:443'
@@ -80,7 +73,7 @@ services:
 
   mysql:
     container_name: ${CONTAINER_PREFIX:-lamp}-mysql
-    image: mysql:${MYSQL_VERSION:-8.0.39}-debian
+    image: mysql:${MYSQL_VERSION:-8.0.40}-debian
     ports:
       - '${MYSQL_PORT:-3306}:3306'
     volumes:
@@ -90,6 +83,18 @@ services:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_CHARSET=utf8mb4
       - MYSQL_COLLATION=utf8mb4_unicode_ci
+    restart: unless-stopped
+
+  postgres:
+    container_name: ${CONTAINER_PREFIX:-lamp}-postgres
+    image: postgres:${POSTGRES_VERSION:-12.19}-bullseye
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root
     restart: unless-stopped
 
   redis:
@@ -105,10 +110,9 @@ services:
     container_name: ${CONTAINER_PREFIX:-lamp}-dnsmasq
     image: strm/dnsmasq
     volumes:
-      - dnsmasq:/etc/dnsmasq.conf
       - ./dnsmasq.conf:/etc/dnsmasq.conf
     ports:
-      - ${DNSMASQ_PORT:-53}:53/udp
+      - '${DNSMASQ_PORT:-53}:53/udp'
     cap_add:
       - NET_ADMIN
     networks:
@@ -119,9 +123,9 @@ services:
 volumes:
   projects:
   mysql:
+  postgres:
   redis:
   composer:
-  dnsmasq:
 
 networks:
   default:
