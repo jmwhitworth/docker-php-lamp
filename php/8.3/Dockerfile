@@ -49,7 +49,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions \
         gd \
         gmp \
         mysqli \
-        # imagick \ *NOT CURRENTLY SUPPORTED
+        imagick \
         intl \
         opcache \
         redis \

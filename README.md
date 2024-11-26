@@ -7,7 +7,7 @@ Built for universal PHP development with a focus on Laravel & WordPress tools.
 ## Currently supports / includes:
 
 - PHP:
-  - 8.3 (Imagick not currently supported)
+  - 8.3
   - 7.4
 - Python 3 (With pipenv)
 - xDebug
