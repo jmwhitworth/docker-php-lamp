@@ -11,7 +11,7 @@ x-php-service: &php-service
         GIT_NAME: ${GIT_NAME:-''}
         # Node is installed via NVM so this can be flexible during use
         NODE_VERSION: ${NODE_VERSION:-14.21.3}
-        COMPOSER_VERSION: ${COMPOSER_VERSION:-2.8.2}
+        COMPOSER_VERSION: ${COMPOSER_VERSION:-2.8.3}
   volumes:
     # Project files & Composer cache (optional)
     - projects:/var/www/html
@@ -49,7 +49,7 @@ services:
 
   nginx:
     container_name: ${CONTAINER_PREFIX:-lamp}-nginx
-    image: nginx:${NGINX_VERSION:-1.25}-bullseye
+    image: nginx:${NGINX_VERSION:-1.27}-alpine
     ports:
       - '${NGINX_PORT:-80}:80'
       - '${NGINX_SSL_PORT:-443}:443'
@@ -87,7 +87,7 @@ services:
 
   postgres:
     container_name: ${CONTAINER_PREFIX:-lamp}-postgres
-    image: postgres:${POSTGRES_VERSION:-12.19}-bullseye
+    image: postgres:${POSTGRES_VERSION:-12.22}-bullseye
     ports:
       - '${POSTGRES_PORT:-5432}:5432'
     volumes:
@@ -102,8 +102,6 @@ services:
     image: redis:7.4-alpine
     ports: 
       - '${REDIS_PORT:-6379}:6379'
-    volumes:
-      - redis:/data
     restart: unless-stopped
 
   dnsmasq:
@@ -124,7 +122,6 @@ volumes:
   projects:
   mysql:
   postgres:
-  redis:
   composer:
 
 networks:
